@@ -13,3 +13,4 @@ cyprus_layer.loadNamedStyle(current_path + "\shp_qmls\Cyprus.qml")
 temp_layer = iface.addVectorLayer(pathfile, geoJSON, "ogr")
 temp_layer.loadNamedStyle(current_path + "\\shp_qmls\\temp.qml")
 ```
+![example](https://github.com/Mariosmsk/QGIS-Python-Cyprus-Weather-Forecast/blob/master/test_qgis.PNG)
