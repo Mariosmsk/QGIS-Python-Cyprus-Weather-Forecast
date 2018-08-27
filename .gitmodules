@@ -1,0 +1,3 @@
+[submodule "QWeather"]
+	path = QWeather
+	url = https://github.com/KIOS-Research/QWeather
