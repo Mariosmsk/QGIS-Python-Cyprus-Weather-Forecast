@@ -17,18 +17,24 @@ email                : mariosmsk@gmail.com
  *                                                                         *
  ***************************************************************************/
 """
-from urllib import urlopen
+import urllib3
 from xml.dom import minidom
 import json
-
+import io
 
 class getTemperatureCyprusWeatherForecast(object):
 
     def __init__(self, geo_jsonfile_name):
         self.geofile = open(geo_jsonfile_name, 'w')
         url = 'http://weather.cyi.ac.cy/data/met/CyDoM.xml'  # define XML location
-        xml = urlopen(url).read()
-        doc = minidom.parseString(xml)
+        http = urllib3.PoolManager()
+        data = http.request('GET', url)
+        f = io.open('tmp.xml', 'w')
+        da = data.data.decode('UTF-8')
+        f.write(da)
+        f.close()
+
+        doc = minidom.parseString(da)
         self.getStations = doc.documentElement.getElementsByTagName("station")
         self.observations = doc.documentElement.getElementsByTagName("observations")
 
