@@ -51,7 +51,7 @@ class getTemperatureCyprusWeatherForecast(object):
                     station_temperature = self.observations[i].getElementsByTagName("observation")[j].getElementsByTagName("observation_value")[0].firstChild.data
 
                     json_data.append({"properties": {"Station": station_code, "Lat": station_lat, "Date": station_date_time.split(' ')[0],
-                                       "Lon": station_lon, "Time": station_date_time.split(' ')[1], "Celsius": str(int(round(float(station_temperature)))),}, "type": "Feature",
+                                       "Lon": station_lon, "Time": station_date_time.split(' ')[1], "Celsius": str((float(station_temperature))),}, "type": "Feature",
                                       "geometry":{ "coordinates":[float(station_lon), float(station_lat)], "type": "Point"}})
         return json_data
 
