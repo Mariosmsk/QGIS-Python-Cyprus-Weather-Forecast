@@ -38,6 +38,15 @@ class getTemperatureCyprusWeatherForecast(object):
         self.getStations = doc.documentElement.getElementsByTagName("station")
         self.observations = doc.documentElement.getElementsByTagName("observations")
 
+    # get data
+    def getElementData(self, i, objectid):
+        obj_value = ''
+        for l, findel in enumerate(self.observations[i].getElementsByTagName("observation")):
+            if findel.getElementsByTagName("observation_name")[0].firstChild.data == objectid:
+                obj_value = self.observations[i].getElementsByTagName("observation")[l].\
+                getElementsByTagName("observation_value")[0].firstChild.data  # knots
+        return obj_value
+
     # same size for stations and observations
     def get_data(self):
         json_data = list()
@@ -48,10 +57,17 @@ class getTemperatureCyprusWeatherForecast(object):
                     station_lat = station.getElementsByTagName("station_latitude")[0].firstChild.data
                     station_lon = station.getElementsByTagName("station_longitude")[0].firstChild.data
                     station_date_time = self.observations[i].getElementsByTagName("date_time")[0].firstChild.data
-                    station_temperature = self.observations[i].getElementsByTagName("observation")[j].getElementsByTagName("observation_value")[0].firstChild.data
+
+                    station_temperature = self.getElementData(i, 'Temperature')
+                    wind_speed = self.getElementData(i, 'Wind Speed')
+                    wind_direction = self.getElementData(i, 'Wind Direction')
+                    humidity = self.getElementData(i, 'Humidity')
+                    rain = self.getElementData(i, 'Rain')
 
                     json_data.append({"properties": {"Station": station_code, "Lat": station_lat, "Date": station_date_time.split(' ')[0],
-                                       "Lon": station_lon, "Time": station_date_time.split(' ')[1], "Celsius": str((float(station_temperature))),}, "type": "Feature",
+                                       "Lon": station_lon, "Time": station_date_time.split(' ')[1], "Celsius": str(station_temperature),
+                                       "Wind Speed(knots)": str(wind_speed), "Wind Direction(deg)": str(wind_direction),
+                                       "Humidity(%)": str(humidity), "Rain(mm)": str(rain),}, "type": "Feature",
                                       "geometry":{ "coordinates":[float(station_lon), float(station_lat)], "type": "Point"}})
         return json_data
 
